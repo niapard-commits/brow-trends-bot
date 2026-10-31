@@ -1,0 +1,38 @@
+name: oauth
+
+# Одноразово: обмінює код авторизації на довгий токен із дозволами threads_basic + threads_keyword_search.
+# Секрети: THREADS_APP_SECRET (секрет Threads-застосунку), THREADS_AUTH_CODE (код із адреси після авторизації).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: collect
+  cancel-in-progress: false
+
+jobs:
+  oauth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Exchange code
+        env:
+          THREADS_APP_ID: "1907778793721993"
+          THREADS_REDIRECT_URI: "https://niapard-commits.github.io/brow-trends-legal/"
+          THREADS_APP_SECRET: ${{ secrets.THREADS_APP_SECRET }}
+          THREADS_AUTH_CODE: ${{ secrets.THREADS_AUTH_CODE }}
+        run: python scripts/oauth_exchange.py
+      - name: Save token
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/token.json
+          git commit -m "chore: threads token [skip ci]" || exit 0
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
