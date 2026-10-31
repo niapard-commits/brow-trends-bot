@@ -153,6 +153,8 @@ def main() -> int:
     DIGEST_FILE.write_text(digest, encoding="utf-8")
     removed = purge_old(RAW_DIR, cfg["retention_days"], today)
     print(f"Зібрано {len(posts)} дописів, помилок {len(errors)}, видалено старих файлів {len(removed)}.")
+    for e in errors[:5]:
+        print("Помилка:", e, file=sys.stderr)
     if errors and not posts:
         return 1  # усе впало, наприклад, бракує схвалення keyword_search
     return 0
