@@ -1,0 +1,18 @@
+{
+  "queries": [
+    {"q": "ламінування брів", "lang": "uk"},
+    {"q": "фарбування брів", "lang": "uk"},
+    {"q": "корекція брів", "lang": "uk"},
+    {"q": "ламінування вій", "lang": "uk"},
+    {"q": "brow lamination", "lang": "en"},
+    {"q": "brow tint", "lang": "en"},
+    {"q": "brow shaping", "lang": "en"},
+    {"q": "lash lift", "lang": "en"},
+    {"q": "laminácia obočia", "lang": "sk"},
+    {"q": "farbenie obočia", "lang": "sk"},
+    {"q": "laminácia mihalníc", "lang": "sk"}
+  ],
+  "search_types": ["TOP", "RECENT"],
+  "limit": 25,
+  "retention_days": 90
+}
