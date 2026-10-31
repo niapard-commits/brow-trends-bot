@@ -52,3 +52,9 @@ def test_failed_code_exchange_saves_nothing(monkeypatch, tmp_path):
 def test_missing_env_fails(monkeypatch, tmp_path):
     _env(monkeypatch, tmp_path, code="")
     assert o.main() == 1
+
+
+def test_extract_code_accepts_full_url_or_bare_code():
+    assert o.extract_code("https://x/brow-trends-legal/?code=AQB123#_") == "AQB123"
+    assert o.extract_code(" AQB123#_\n") == "AQB123"
+    assert o.extract_code("https://x/?a=1&code=AQB1&b=2") == "AQB1"

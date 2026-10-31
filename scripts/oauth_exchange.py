@@ -19,9 +19,17 @@ def env(name: str) -> str:
     return os.environ.get(name, "").strip()
 
 
+def extract_code(raw: str) -> str:
+    """Приймає або сам код, або всю адресу після авторизації (…?code=AQ…#_)."""
+    raw = raw.strip().split("#")[0]
+    if "code=" in raw:
+        raw = raw.split("code=", 1)[1].split("&")[0]
+    return raw.strip()
+
+
 def main() -> int:
     app_id, secret, redirect = env("THREADS_APP_ID"), env("THREADS_APP_SECRET"), env("THREADS_REDIRECT_URI")
-    code = env("THREADS_AUTH_CODE").split("#")[0].strip()
+    code = extract_code(env("THREADS_AUTH_CODE"))
     if not all([app_id, secret, redirect, code]):
         print("Бракує одного з: THREADS_APP_ID, THREADS_APP_SECRET, THREADS_REDIRECT_URI, THREADS_AUTH_CODE", file=sys.stderr)
         return 1
