@@ -33,6 +33,8 @@ def main() -> int:
     if not all([app_id, secret, redirect, code]):
         print("Бракує одного з: THREADS_APP_ID, THREADS_APP_SECRET, THREADS_REDIRECT_URI, THREADS_AUTH_CODE", file=sys.stderr)
         return 1
+    print(f"Діагностика: довжина секрету {len(secret)} (очікується 32), лише літери й цифри: {secret.isalnum()}, "
+          f"довжина коду {len(code)}, app_id {app_id}")
     r = requests.post(f"{c.API}/oauth/access_token", data={
         "client_id": app_id, "client_secret": secret, "grant_type": "authorization_code",
         "redirect_uri": redirect, "code": code}, timeout=30)
