@@ -86,6 +86,7 @@ def collect(token: str, cfg: dict) -> tuple[dict[str, dict], list[str]]:
             except (RuntimeError, requests.RequestException) as e:
                 errors.append(f"«{item['q']}» {st}: {e}")
                 continue
+            print(f"GET /keyword_search q='{item['q']}' search_type={st} -> 200, {len(rows)} public posts")
             for p in rows:
                 cur = posts.setdefault(p["id"], {
                     "id": p["id"], "text": p.get("text", ""), "username": p.get("username", ""),
